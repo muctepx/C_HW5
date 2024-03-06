@@ -11,38 +11,48 @@ namespace Sem5
     {
 
 
-        public event EventHandler<OperandChangedEventArgs> GetResult;
-        private Stack <double> stack = new Stack<double>();
-        private double Result 
-        { 
-            get 
-            {
-                return stack.Count() == 0? 0: stack.Peek();
-                
-            } 
-            set 
-            { 
-                stack.Push(value) ;
-                RaiseEvent();
-            } 
-        }
+          public event EventHandler<OperandChangedEventArgs> GetResult;
+           private Stack <double> stack = new Stack<double>();
+          private double Result 
+           { 
+               get 
+               {
+                   return stack.Count() == 0? 0: stack.Peek();
 
-        public void CancelLast()
-        {
-            if (stack.Count > 0)
-            {
-                stack.Pop();
-                RaiseEvent();
-            }
+               } 
+               set 
+               { 
+                   stack.Push(value) ;
+                   RaiseEvent();
+               } 
+           }
 
-        }
-        public void RaiseEvent()
-        {
-            GetResult.Invoke(this, new OperandChangedEventArgs(Result));
-        }
+           public void CancelLast()
+           {
+               if (stack.Count > 0)
+               {
+                   stack.Pop();
+                   RaiseEvent();
+               }
+
+           }
+           public void RaiseEvent()
+           {
+               GetResult.Invoke(this, new OperandChangedEventArgs(Result));
+           }
+        
+
         public void Divide(double number)
         {
-            Result /=  number;
+            if (number != 0)
+            {
+                Result /= number;
+            }
+            else
+            {
+                Console.WriteLine("Деление на ноль невозможно");
+            }
+            
         }
 
         public void Multiply(double number)

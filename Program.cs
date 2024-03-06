@@ -1,4 +1,5 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Sem5
 {
@@ -21,28 +22,38 @@ namespace Sem5
              
             */
             ICalc calculator = new Calculator();
-            calculator.GetResult += Calculator_GetResult;
-            Console.Write("Введите число: ");
-            double number = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Введите операцию: ");
-            string operation = Convert.ToString(Console.ReadLine());
-            
-
-            switch (operation)
+         calculator.GetResult += Calculator_GetResult;
+            do 
             {
-                case "+":
-                    calculator.Sum(number);
+                Console.Write("Введите число: ");
+                double number = Convert.ToDouble(Console.ReadLine());
+                Console.Write("Введите операцию (для выхода из программы введите 'q'): ");
+                string operation = Convert.ToString(Console.ReadLine());
+            if (operation == "q")
+                {
                     break;
-                case "-":
-                    calculator.Subtract(number);
-                    break;
-                case "*":
-                    calculator.Multiply(number);
-                    break;
-                case "/":
-                    calculator.Divide(number);
-                    break;
-            }
+                }
+            
+                switch (operation)
+                {
+                    case "+":
+                        calculator.Sum(number);
+                        break;
+                    case "-":
+                        calculator.Subtract(number);
+                        break;
+                    case "*":
+                        calculator.Multiply(number);
+                        break;
+                    case "/":
+                        calculator.Divide(number);
+                        break;
+                    default:
+                        Console.WriteLine("Неверная команда");
+                        break;
+                }
+            } while (true);      
+            
             /*
             calculator.Sum(5);
             calculator.Divide(5);
@@ -52,12 +63,10 @@ namespace Sem5
             calculator.CancelLast();
             calculator.CancelLast();
             */
-
         }
-           
-            private static void Calculator_GetResult(object? sender, OperandChangedEventArgs e)
+          private static void Calculator_GetResult(object? sender, OperandChangedEventArgs e)
        {
-           Console.WriteLine(e.Operand);
+        Console.WriteLine(e.Operand);
         }
             /*
             Модифицируйте код калькулятора следующим образом реализовав представленный ниже интерфейс:
