@@ -9,10 +9,10 @@ namespace Sem5
     internal interface ICalc
     {
        public event EventHandler<OperandChangedEventArgs> GetResult;
-        void  Sum(double x);
-        void Subtract(double x);
-        void Multiply(double x);
-        void Divide(double x);
+        void  Sum(int x);
+        void Subtract(int x);
+        void Multiply(int x);
+        void Divide(int x);
         void CancelLast();
 
 
