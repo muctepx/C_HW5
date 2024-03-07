@@ -11,64 +11,103 @@ namespace Sem5
     {
 
 
-          public event EventHandler<OperandChangedEventArgs> GetResult;
-           private Stack <double> stack = new Stack<double>();
-          private double Result 
-           { 
-               get 
-               {
-                   return stack.Count() == 0? 0: stack.Peek();
-
-               } 
-               set 
-               { 
-                   stack.Push(value) ;
-                   RaiseEvent();
-               } 
-           }
-
-           public void CancelLast()
-           {
-               if (stack.Count > 0)
-               {
-                   stack.Pop();
-                   RaiseEvent();
-               }
-
-           }
-           public void RaiseEvent()
-           {
-               GetResult.Invoke(this, new OperandChangedEventArgs(Result));
-           }
-        
-
-        public void Divide(double number)
+        public event EventHandler<OperandChangedEventArgs> GetResult;
+        private Stack<int> stack = new Stack<int>();
+        private int Result
         {
-            if (number != 0)
+            get
             {
+                return stack.Count() == 0 ? 0 : stack.Peek();
+
+            }
+            set
+            {
+                stack.Push(value);
+                RaiseEvent();
+            }
+        }
+
+  
+        public void CancelLast()
+        {
+            if (stack.Count > 0)
+            {
+                stack.Pop();
+                RaiseEvent();
+            }
+
+        }
+        public void RaiseEvent()
+        {
+            GetResult.Invoke(this, new OperandChangedEventArgs(Result));
+        }
+
+
+        public void Divide(int number)
+
+        {
+            try
+            {
+
+               if (number == 0)
+                    throw new CalculatorDivideByZeroException("Деление на ноль недопустимо");
                 Result /= number;
+                  
+          
             }
-            else
+   
+            catch (OverflowException)
             {
-                Console.WriteLine("Деление на ноль невозможно");
+                throw new CalculateOperationCauseOverflowException("Превышено допустимое число");
             }
-            
         }
 
-        public void Multiply(double number)
+
+
+        public void Multiply(int number)
+
         {
-             Result *=  number;
+            try
+            {
+                checked
+                {
+                    Result *= number;
+                }
+                }
+            catch
+            {
+                throw new CalculateOperationCauseOverflowException("Превышено допустимое число");
+            }
+        
         }
 
-        public void Subtract(double number)
+        public void Subtract(int number)
         {
-            Result -= number ;
+            try
+            {
+                
+                    Result -= number;
+                
+            }
+            catch
+            {
+                throw new CalculateOperationCauseOverflowException("Превышено допустимое число");
+            }
         }
 
-        public void Sum(double number)
+        public void Sum(int number)
         {
-             Result += number;
+            try
+            {
+               
+                    Result += number;
+                
+            }
+            catch
+            {
+                throw new CalculateOperationCauseOverflowException("Превышено допустимое число");
+            }
         }
-       
     }
 }
+

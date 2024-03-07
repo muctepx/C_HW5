@@ -22,18 +22,19 @@ namespace Sem5
              
             */
             ICalc calculator = new Calculator();
+            Logger logger = new Logger();
+
          calculator.GetResult += Calculator_GetResult;
             do 
             {
-                Console.Write("Введите число: ");
-                double number = Convert.ToDouble(Console.ReadLine());
-                Console.Write("Введите операцию (для выхода из программы введите 'q'): ");
-                string operation = Convert.ToString(Console.ReadLine());
-            if (operation == "q")
+                try
                 {
-                    break;
-                }
-            
+                    
+                    Console.Write("Введите число: ");
+                    int number = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Введите операцию (для выхода из программы введите 'q'): ");
+                string operation = Console.ReadLine();
+                    logger.AddLog(number, operation);
                 switch (operation)
                 {
                     case "+":
@@ -43,15 +44,32 @@ namespace Sem5
                         calculator.Subtract(number);
                         break;
                     case "*":
-                        calculator.Multiply(number);
+                        calculator.Multiply(int.MaxValue);
                         break;
                     case "/":
                         calculator.Divide(number);
                         break;
-                    default:
+                    case "q":
+                            return;
+                            break;
+                        default:
                         Console.WriteLine("Неверная команда");
                         break;
                 }
+                }
+                catch (CalculateOperationCauseOverflowException ex)
+                {
+                    Console.WriteLine(ex.Message + logger.GetLog());
+                }
+                catch (CalculatorDivideByZeroException ex)
+                {
+                    Console.WriteLine(ex.Message + logger.GetLog());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message + logger.GetLog());
+                }
+
             } while (true);      
             
             /*
